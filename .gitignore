@@ -1,0 +1,19 @@
+# Secretos y variables de entorno (nunca se sube al repositorio)
+.env
+
+# --- Backend (Python / Django) ---
+backend/venv/
+backend/**/__pycache__/
+*.pyc
+backend/db.sqlite3
+backend/staticfiles/
+backend/media/
+
+# --- Frontend (Node / Ionic) ---
+# El propio frontend/.gitignore ya cubre node_modules, dist, etc.
+
+# --- Editor / SO ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
