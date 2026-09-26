@@ -1,5 +1,7 @@
 # Secretos y variables de entorno (nunca se sube al repositorio)
 .env
+*firebase*service-account*.json
+*serviceAccountKey*.json
 
 # --- Backend (Python / Django) ---
 backend/venv/

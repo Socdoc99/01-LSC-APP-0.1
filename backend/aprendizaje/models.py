@@ -19,6 +19,11 @@ class Usuario(models.Model):
     def __str__(self):
         return self.nombre
 
+    @property
+    def is_authenticated(self):
+        """Permite usar esta clase como request.user en DRF (que espera este atributo)."""
+        return True
+
 
 class Modulo(models.Model):
     titulo = models.CharField(max_length=150)
