@@ -30,6 +30,16 @@ Una persona nueva entra al sitio, se registra con su correo (usando Firebase Aut
 | POST /api/admin/senas | (Solo administrador) Carga una seña nueva, sin marcarla validada todavía. |
 | POST /api/admin/senas/{id}/validar | (Solo administrador) Marca una seña como validada, registrando quién la validó. |
 
+## Formato de `contenido_json` por tipo de ejercicio
+
+`contenido_json` es un campo JSON libre en el modelo `Ejercicio`, así que su forma no la impone la base de datos — la fija el frontend (`frontend/src/pages/Leccion.tsx`) al consumirla. Al cargar un ejercicio nuevo (`POST /api/admin/senas`), debe respetar esta forma según `tipo`:
+
+| Tipo | Forma de `contenido_json` | Notas |
+|---|---|---|
+| `video_a_palabra` | `{ "opciones": ["Hola", "Adiós", ...] }` | Lista de palabras candidatas; debe incluir `palabra` de la seña asociada como una de las opciones. |
+| `palabra_a_video` | `{ "opciones": ["https://.../v1.mp4", ...] }` | Lista de URLs de video candidatas; debe incluir `video_url` de la seña asociada como una de las opciones. |
+| `orden_pasos` | `{ "pasos": ["paso B", "paso A", ...], "orden_correcto": [1, 0] }` | `pasos` se muestra en el orden dado (ya desordenado); `orden_correcto` son los índices de `pasos` en la secuencia correcta. |
+
 ## Pantallas del frontend
 
 Pantalla de registro e inicio de sesión (delegada en gran parte a Firebase Auth, con una interfaz simple encima). Pantalla de inicio, que muestra el módulo disponible y la racha actual de forma visible y motivante. Pantalla de lección, que reproduce el video de la seña y presenta el ejercicio correspondiente, con retroalimentación inmediata (correcto o incorrecto) sin depender de sonido para comunicarla. Pantalla de resumen al terminar un módulo, mostrando cuántas señas se aprendieron. Pantalla de perfil, con la racha actual, la racha máxima y la posibilidad de cerrar sesión.
