@@ -1,5 +1,9 @@
 # Secretos y variables de entorno (nunca se sube al repositorio)
-.env
+# Cubre .env, .env.local, .env.production, etc. (las variantes que usa Vite),
+# pero no la plantilla .env.example.
+.env*
+!.env.example
+!.env.production.example
 *firebase*service-account*.json
 *serviceAccountKey*.json
 
@@ -13,6 +17,11 @@ backend/media/
 
 # --- Frontend (Node / Ionic) ---
 # El propio frontend/.gitignore ya cubre node_modules, dist, etc.
+
+# --- Firebase Auth Emulator (desarrollo local) ---
+firebase-debug.log
+*.out.log
+*.err.log
 
 # --- Editor / SO ---
 .vscode/

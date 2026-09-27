@@ -40,6 +40,24 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
+# En Render (y la mayoría de hosting gratuito) el proxy termina el HTTPS y le
+# manda la app por HTTP interno con esta cabecera; sin esto Django cree que la
+# conexión nunca es segura y algunas protecciones (CSRF, cookies "secure") no
+# funcionan bien detrás del proxy.
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Orígenes desde los que se aceptan formularios con CSRF token (el admin de
+# Django). Por defecto, los mismos dominios de ALLOWED_HOSTS con https://.
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get(
+        'DJANGO_CSRF_TRUSTED_ORIGINS',
+        ','.join(f'https://{host}' for host in ALLOWED_HOSTS if host not in ('localhost', '127.0.0.1')),
+    ).split(',')
+    if origin.strip()
+]
+
 
 # Application definition
 
@@ -57,6 +75,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -97,6 +116,12 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '5432'),
+        # Supabase (y la mayoría de Postgres gestionado) exige TLS. En local,
+        # sin esta variable, sslmode queda en 'prefer' (el valor por defecto
+        # del propio driver) y no molesta a un Postgres sin TLS.
+        'OPTIONS': (
+            {'sslmode': os.environ['DB_SSLMODE']} if os.environ.get('DB_SSLMODE') else {}
+        ),
     }
 }
 
@@ -134,8 +159,20 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
+# WhiteNoise sirve los estáticos del admin de Django directamente desde la
+# misma app, sin necesitar un servidor de estáticos aparte en el hosting.
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
 
 
 # Email
