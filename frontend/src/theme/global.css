@@ -158,6 +158,23 @@ ion-segment-button:focus-visible {
   font-size: 1.15rem;
 }
 
+/* ---------- Saludo de Inicio (personalizado, sin tarjeta: el texto es el protagonista) ---------- */
+
+.home-greeting {
+  animation: entrada 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.home-greeting__titulo {
+  font-size: 1.7rem;
+  margin: 0;
+}
+
+.home-greeting__subtexto {
+  color: var(--color-ink-muted);
+  margin: 0.35rem 0 0;
+  font-family: var(--font-body);
+}
+
 /* ---------- Módulo destacado en Inicio ---------- */
 
 .module-card {
@@ -166,6 +183,8 @@ ion-segment-button:focus-visible {
   background: var(--color-surface);
   box-shadow: var(--shadow-card);
   margin-top: 1.25rem;
+  animation: entrada 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.08s;
 }
 
 .module-card__header {
@@ -212,6 +231,76 @@ ion-segment-button:focus-visible {
   color: var(--color-ink-muted);
   margin: 0 0 1.25rem;
   line-height: 1.5;
+}
+
+.module-card__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Vista previa de señas del módulo: tira horizontal, deliberadamente
+   plana (sin sombra) para no repetir el lenguaje de tarjeta del módulo ---------- */
+
+.senas-preview {
+  margin-top: 1.75rem;
+  animation: entrada 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.16s;
+}
+
+.senas-preview__etiqueta {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  margin: 0 0 0.65rem;
+}
+
+.senas-preview__lista {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.35rem;
+  margin: 0 -0.1rem;
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+}
+
+.sena-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem 0.4rem 0.4rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.sena-chip__marca {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-mint), #1f9c90);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  flex-shrink: 0;
 }
 
 /* ---------- Lección: secuencia de pasos (sí es una secuencia real) ---------- */
@@ -327,7 +416,10 @@ ion-segment-button:focus-visible {
   .auth-card,
   .feedback-sheet,
   .celebracion,
-  .hero-mark {
+  .hero-mark,
+  .home-greeting,
+  .module-card,
+  .senas-preview {
     animation: none !important;
   }
 }
