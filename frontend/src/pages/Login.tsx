@@ -137,13 +137,26 @@ export default function Login() {
                 </IonText>
               )}
 
+              {modo === 'registrar' && (
+                <IonNote className="ion-text-center" style={{ display: 'block', marginTop: '0.75rem' }}>
+                  Al crear tu cuenta usamos tu correo únicamente para identificarte y
+                  mostrarte tu progreso; tu nombre y racha se guardan para personalizar
+                  tu experiencia de aprendizaje. Nunca se comparten con terceros
+                  (Ley 1581 de 2012).
+                </IonNote>
+              )}
+
               <IonButton
                 expand="block"
                 onClick={enviar}
                 disabled={enviando || !firebaseConfigurado}
                 style={{ marginTop: '1rem' }}
               >
-                {enviando ? <IonSpinner name="dots" /> : modo === 'registrar' ? 'Crear cuenta' : 'Entrar'}
+                {enviando
+                  ? <IonSpinner name="dots" />
+                  : modo === 'registrar'
+                    ? 'Acepto y creo mi cuenta'
+                    : 'Entrar'}
               </IonButton>
             </IonCardContent>
           </IonCard>
