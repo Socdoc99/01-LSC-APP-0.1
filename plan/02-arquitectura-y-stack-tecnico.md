@@ -49,6 +49,8 @@ Para trabajar en Windows conviene instalar Node.js (versión LTS), Python 3.11 o
 
 Para el despliegue, cuando llegue el momento de que alguien externo al equipo pruebe la plataforma (requisito de éxito de todas las fases, según el documento de visión y alcance), conviene usar servicios con un nivel gratuito o de bajo costo acorde con un proyecto de grado: por ejemplo, Vercel o Netlify para el frontend, y Render o Railway para el backend junto con la base de datos PostgreSQL. La elección exacta de proveedor no es una decisión que deba tomarse ahora; alcanza con confirmarla al llegar al final de la Fase 1, cuando haya algo real que desplegar.
 
+**Despliegue actual (Fase 1):** frontend en Firebase Hosting (`https://lsc-2bfd8.web.app`), backend en Render (`https://love-lsc-backend.onrender.com`), base de datos en Supabase (proyecto `01_love-lsc`, PostgreSQL gestionado). El backend se despliega desde `render.yaml` (Blueprint) y el frontend con `cd frontend && npm run build && firebase deploy --only hosting` (usando `.env.production` en la raíz, ver `.env.production.example`). El plan gratuito de Render duerme el servicio tras inactividad; la primera petición después de un rato puede tardar hasta ~50 segundos.
+
 ## Convenciones de código
 
 Los commits se escriben en español y en minúscula, con el formato `fase<n>: descripción breve en presente`, por ejemplo `fase1: agrega endpoint de progreso de usuario`. Las ramas se nombran `fase<n>/nombre-de-la-funcionalidad`. El código en sí (nombres de variables, funciones y clases) puede escribirse en español o en inglés según lo que el equipo decida, pero debe mantenerse consistente dentro de cada proyecto (frontend y backend) una vez elegido, para no mezclar los dos idiomas en el mismo archivo.

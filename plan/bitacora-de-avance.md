@@ -92,9 +92,31 @@ consentimiento explícito al registrarse — se agregó uno en la pantalla de Lo
 manage.py check` no reporta problemas, y el frontend compila y pasa sus pruebas
 (`tsc --noEmit`, `npx vitest run`, `npm run build`) sin errores nuevos.
 
+Se completó el despliegue en producción, con el usuario creando las cuentas
+necesarias (esto no se puede automatizar) y guiado paso a paso: proyecto Supabase
+`01_love-lsc` (Postgres gestionado), servicio `love-lsc-backend` en Render desplegado
+desde `render.yaml`, y el frontend compilado en modo producción y publicado en
+Firebase Hosting con `firebase deploy --only hosting`. En el camino se corrigió un
+error real de autenticación con la base de datos (el usuario de conexión de Supabase
+estaba incompleto en Render) y se resolvió la sesión de Firebase CLI, que requirió
+varios intentos porque el usuario confundía el ID de sesión del login con el código
+de autorización real.
+
+**Probado en el sitio público real:** con la extensión de automatización ya conectada
+en esta sesión, se verificó el flujo completo contra la app desplegada
+(`https://lsc-2bfd8.web.app` hablando con `https://love-lsc-backend.onrender.com` y la
+base de datos de Supabase): inicio de sesión con una cuenta ya existente, la pantalla
+de Inicio cargando racha y módulos desde el backend real en producción, y la pantalla
+de Perfil mostrando los datos correctos. La base de datos de producción está vacía de
+módulos (a propósito: no se copió el módulo de prueba local, por ser contenido no
+validado) — de ahí el mensaje "no hay módulo disponible", que es el comportamiento
+correcto.
+
 **Pendiente para la próxima sesión:** validación real de contenido por una persona
-sorda o intérprete certificado; verificación visual de Lección/Resumen (manual, por
-el usuario, o en un entorno donde la extensión de automatización funcione); crear las
-cuentas de Render, Supabase y hacer login con Firebase CLI para desplegar de verdad
-(esto requiere que el usuario cree las cuentas — no es algo que se pueda automatizar);
-retroalimentación de 2–3 personas ajenas al equipo, documentada por escrito.
+sorda o intérprete certificado (y luego cargar ese módulo real en Supabase, no en el
+Postgres local); verificación visual de Lección/Resumen (ya es posible probarla en el
+sitio real en cuanto haya al menos un módulo validado cargado); retroalimentación de
+2–3 personas ajenas al equipo, con la URL pública ya lista para compartir,
+documentada por escrito. Nota operativa: el plan gratuito de Render duerme el backend
+tras inactividad — la primera petición después de un rato sin uso puede tardar hasta
+~50 segundos.
