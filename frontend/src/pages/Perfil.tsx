@@ -51,16 +51,16 @@ export default function Perfil() {
         </IonText>
 
         {cargando ? (
-          <IonSpinner />
+          <IonSpinner aria-label="Cargando" />
         ) : (
           <IonList>
             <IonItem>
-              <IonIcon icon={flameOutline} slot="start" color="warning" />
+              <IonIcon icon={flameOutline} slot="start" color="warning" aria-hidden="true" />
               <IonLabel>Racha actual</IonLabel>
               <IonChip slot="end">{racha?.racha_actual ?? 0} día(s)</IonChip>
             </IonItem>
             <IonItem>
-              <IonIcon icon={trophyOutline} slot="start" color="secondary" />
+              <IonIcon icon={trophyOutline} slot="start" color="secondary" aria-hidden="true" />
               <IonLabel>Racha máxima</IonLabel>
               <IonChip slot="end">{racha?.racha_maxima ?? 0} día(s)</IonChip>
             </IonItem>

@@ -10,7 +10,7 @@ export default function RutaProtegida({ children }: { children: ReactNode }) {
     return (
       <IonPage>
         <IonContent className="ion-padding ion-text-center">
-          <IonSpinner />
+          <IonSpinner aria-label="Cargando" />
         </IonContent>
       </IonPage>
     );

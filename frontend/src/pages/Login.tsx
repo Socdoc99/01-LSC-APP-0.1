@@ -57,7 +57,7 @@ export default function Login() {
     return (
       <IonPage>
         <IonContent className="ion-padding ion-text-center">
-          <IonSpinner />
+          <IonSpinner aria-label="Cargando" />
         </IonContent>
       </IonPage>
     );

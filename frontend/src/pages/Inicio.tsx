@@ -52,11 +52,15 @@ export default function Inicio() {
       <IonContent className="ion-padding">
         {cargando && (
           <div className="ion-text-center">
-            <IonSpinner />
+            <IonSpinner aria-label="Cargando" />
           </div>
         )}
 
-        {!cargando && error && <IonText color="danger">{error}</IonText>}
+        {!cargando && error && (
+          <IonText color="danger">
+            <p role="alert">{error}</p>
+          </IonText>
+        )}
 
         {!cargando && !error && (
           <>

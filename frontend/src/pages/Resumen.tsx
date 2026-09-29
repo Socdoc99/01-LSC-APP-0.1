@@ -11,7 +11,11 @@ export default function Resumen() {
     <IonPage>
       <IonContent className="ion-padding ion-text-center">
         <div style={{ marginTop: '3rem' }}>
-          <IonIcon icon={ribbonOutline} style={{ fontSize: '4rem', color: 'var(--ion-color-success)' }} />
+          <IonIcon
+            icon={ribbonOutline}
+            aria-hidden="true"
+            style={{ fontSize: '4rem', color: 'var(--ion-color-success)' }}
+          />
           <IonText>
             <h1>¡Módulo completado!</h1>
             <p>

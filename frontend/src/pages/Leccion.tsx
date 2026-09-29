@@ -137,7 +137,7 @@ export default function Leccion() {
     return (
       <IonPage>
         <IonContent className="ion-padding ion-text-center">
-          <IonSpinner />
+          <IonSpinner aria-label="Cargando" />
         </IonContent>
       </IonPage>
     );
@@ -147,7 +147,9 @@ export default function Leccion() {
     return (
       <IonPage>
         <IonContent className="ion-padding">
-          <IonText color="danger">{error}</IonText>
+          <IonText color="danger">
+            <p role="alert">{error}</p>
+          </IonText>
         </IonContent>
       </IonPage>
     );
@@ -179,7 +181,12 @@ export default function Leccion() {
       <IonContent className="ion-padding">
         {ejercicioActual.tipo === 'video_a_palabra' && (
           <>
-            <video src={senaActual.video_url} controls style={{ width: '100%', maxHeight: 300 }} />
+            <video
+              src={senaActual.video_url}
+              controls
+              aria-label="Video de la seña a identificar"
+              style={{ width: '100%', maxHeight: 300 }}
+            />
             <IonText>
               <p>¿Qué palabra corresponde a esta seña?</p>
             </IonText>
@@ -208,7 +215,12 @@ export default function Leccion() {
             <IonList>
               {(ejercicioActual.contenido_json as ContenidoOpciones).opciones.map((url, posicion) => (
                 <div key={url} style={{ marginBottom: '1rem' }}>
-                  <video src={url} controls style={{ width: '100%', maxHeight: 220 }} />
+                  <video
+                    src={url}
+                    controls
+                    aria-label={`Opción de video ${posicion + 1}`}
+                    style={{ width: '100%', maxHeight: 220 }}
+                  />
                   <IonButton
                     expand="block"
                     disabled={Boolean(feedback)}
@@ -257,8 +269,10 @@ export default function Leccion() {
 
         {feedback && (
           <IonChip color={feedback.correcto ? 'success' : 'danger'} style={{ marginTop: '1rem' }}>
-            <IonIcon icon={feedback.correcto ? checkmarkCircle : closeCircle} />
-            <IonLabel>{feedback.correcto ? '¡Correcto!' : 'No era esa. La respuesta correcta era otra.'}</IonLabel>
+            <IonIcon icon={feedback.correcto ? checkmarkCircle : closeCircle} aria-hidden="true" />
+            <IonLabel role="alert">
+              {feedback.correcto ? '¡Correcto!' : 'No era esa. La respuesta correcta era otra.'}
+            </IonLabel>
           </IonChip>
         )}
 
