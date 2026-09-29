@@ -4,20 +4,15 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
-  IonChip,
   IonContent,
   IonHeader,
-  IonIcon,
-  IonLabel,
   IonList,
   IonPage,
-  IonProgressBar,
   IonSpinner,
   IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import { checkmarkCircle, closeCircle } from 'ionicons/icons';
 import { api } from '../api';
 import type { Ejercicio, Sena } from '../api';
 
@@ -176,111 +171,134 @@ export default function Leccion() {
             Ejercicio {indice + 1} de {ejercicios.length}
           </IonTitle>
         </IonToolbar>
-        <IonProgressBar value={(indice + (feedback ? 1 : 0)) / ejercicios.length} />
+        <div className="step-tracker" role="presentation">
+          {ejercicios.map((ej, i) => (
+            <span
+              key={ej.id}
+              className={
+                'step-tracker__dot' +
+                (i < indice || (i === indice && feedback) ? ' step-tracker__dot--hecho' : '') +
+                (i === indice && !feedback ? ' step-tracker__dot--actual' : '')
+              }
+            />
+          ))}
+        </div>
       </IonHeader>
       <IonContent className="ion-padding">
-        {ejercicioActual.tipo === 'video_a_palabra' && (
-          <>
-            <video
-              src={senaActual.video_url}
-              controls
-              aria-label="Video de la seña a identificar"
-              style={{ width: '100%', maxHeight: 300 }}
-            />
-            <IonText>
-              <p>¿Qué palabra corresponde a esta seña?</p>
-            </IonText>
-            <IonList>
-              {(ejercicioActual.contenido_json as ContenidoOpciones).opciones.map((opcion) => (
-                <IonButton
-                  key={opcion}
-                  expand="block"
-                  fill="outline"
-                  disabled={Boolean(feedback)}
-                  onClick={() => responderOpcion(opcion)}
-                >
-                  {opcion}
-                </IonButton>
-              ))}
-            </IonList>
-          </>
-        )}
-
-        {ejercicioActual.tipo === 'palabra_a_video' && (
-          <>
-            <IonText>
-              <h2 className="ion-text-center">{senaActual.palabra}</h2>
-              <p className="ion-text-center">¿Cuál video muestra correctamente esta seña?</p>
-            </IonText>
-            <IonList>
-              {(ejercicioActual.contenido_json as ContenidoOpciones).opciones.map((url, posicion) => (
-                <div key={url} style={{ marginBottom: '1rem' }}>
-                  <video
-                    src={url}
-                    controls
-                    aria-label={`Opción de video ${posicion + 1}`}
-                    style={{ width: '100%', maxHeight: 220 }}
-                  />
+        <div className="contenido">
+          {ejercicioActual.tipo === 'video_a_palabra' && (
+            <>
+              <video
+                src={senaActual.video_url}
+                controls
+                aria-label="Video de la seña a identificar"
+                style={{ width: '100%', maxHeight: 300, borderRadius: 'var(--radius-md)' }}
+              />
+              <IonText>
+                <p>¿Qué palabra corresponde a esta seña?</p>
+              </IonText>
+              <IonList>
+                {(ejercicioActual.contenido_json as ContenidoOpciones).opciones.map((opcion) => (
                   <IonButton
+                    key={opcion}
                     expand="block"
+                    fill="outline"
+                    color="dark"
                     disabled={Boolean(feedback)}
-                    onClick={() => responderOpcion(url)}
+                    onClick={() => responderOpcion(opcion)}
                   >
-                    Elegir video {posicion + 1}
+                    {opcion}
                   </IonButton>
-                </div>
-              ))}
-            </IonList>
-          </>
-        )}
+                ))}
+              </IonList>
+            </>
+          )}
 
-        {ejercicioActual.tipo === 'orden_pasos' && (
-          <>
-            <IonText>
-              <p>Toca los pasos en el orden correcto para formar la seña "{senaActual.palabra}".</p>
-            </IonText>
-            <IonList>
-              {(ejercicioActual.contenido_json as ContenidoOrdenPasos).pasos.map((paso, posicion) => {
-                const orden = secuencia.indexOf(posicion);
-                return (
-                  <IonButton
-                    key={paso}
-                    expand="block"
-                    fill={orden === -1 ? 'outline' : 'solid'}
-                    disabled={Boolean(feedback)}
-                    onClick={() => alternarPaso(posicion)}
-                  >
-                    {orden !== -1 ? `${orden + 1}. ` : ''}
-                    {paso}
-                  </IonButton>
-                );
-              })}
-            </IonList>
-            <IonButton
-              expand="block"
-              color="secondary"
-              disabled={Boolean(feedback) || secuencia.length === 0}
-              onClick={comprobarOrden}
+          {ejercicioActual.tipo === 'palabra_a_video' && (
+            <>
+              <IonText>
+                <h2 className="ion-text-center">{senaActual.palabra}</h2>
+                <p className="ion-text-center">¿Cuál video muestra correctamente esta seña?</p>
+              </IonText>
+              <IonList>
+                {(ejercicioActual.contenido_json as ContenidoOpciones).opciones.map((url, posicion) => (
+                  <div key={url} style={{ marginBottom: '1rem' }}>
+                    <video
+                      src={url}
+                      controls
+                      aria-label={`Opción de video ${posicion + 1}`}
+                      style={{ width: '100%', maxHeight: 220, borderRadius: 'var(--radius-md)' }}
+                    />
+                    <IonButton
+                      expand="block"
+                      color="dark"
+                      disabled={Boolean(feedback)}
+                      onClick={() => responderOpcion(url)}
+                    >
+                      Elegir video {posicion + 1}
+                    </IonButton>
+                  </div>
+                ))}
+              </IonList>
+            </>
+          )}
+
+          {ejercicioActual.tipo === 'orden_pasos' && (
+            <>
+              <IonText>
+                <p>Toca los pasos en el orden correcto para formar la seña "{senaActual.palabra}".</p>
+              </IonText>
+              <IonList>
+                {(ejercicioActual.contenido_json as ContenidoOrdenPasos).pasos.map((paso, posicion) => {
+                  const orden = secuencia.indexOf(posicion);
+                  return (
+                    <IonButton
+                      key={paso}
+                      expand="block"
+                      fill={orden === -1 ? 'outline' : 'solid'}
+                      color={orden === -1 ? 'dark' : 'primary'}
+                      disabled={Boolean(feedback)}
+                      onClick={() => alternarPaso(posicion)}
+                    >
+                      {orden !== -1 ? `${orden + 1}. ` : ''}
+                      {paso}
+                    </IonButton>
+                  );
+                })}
+              </IonList>
+              <IonButton
+                expand="block"
+                color="secondary"
+                disabled={Boolean(feedback) || secuencia.length === 0}
+                onClick={comprobarOrden}
+              >
+                Comprobar orden
+              </IonButton>
+            </>
+          )}
+
+          {feedback && (
+            <div
+              className={
+                'feedback-sheet ' +
+                (feedback.correcto ? 'feedback-sheet--correcto' : 'feedback-sheet--incorrecto')
+              }
             >
-              Comprobar orden
+              <span className="feedback-sheet__icono" aria-hidden="true">
+                {feedback.correcto ? '✓' : '✕'}
+              </span>
+              <span role="alert">
+                {feedback.correcto ? '¡Correcto!' : 'No era esa. La respuesta correcta era otra.'}
+              </span>
+            </div>
+          )}
+
+          {feedback && (
+            <IonButton expand="block" color="secondary" style={{ marginTop: '1rem' }} onClick={siguiente}>
+              {indice + 1 < ejercicios.length ? 'Siguiente' : 'Ver resumen'}
             </IonButton>
-          </>
-        )}
-
-        {feedback && (
-          <IonChip color={feedback.correcto ? 'success' : 'danger'} style={{ marginTop: '1rem' }}>
-            <IonIcon icon={feedback.correcto ? checkmarkCircle : closeCircle} aria-hidden="true" />
-            <IonLabel role="alert">
-              {feedback.correcto ? '¡Correcto!' : 'No era esa. La respuesta correcta era otra.'}
-            </IonLabel>
-          </IonChip>
-        )}
-
-        {feedback && (
-          <IonButton expand="block" style={{ marginTop: '1rem' }} onClick={siguiente}>
-            {indice + 1 < ejercicios.length ? 'Siguiente' : 'Ver resumen'}
-          </IonButton>
-        )}
+          )}
+        </div>
       </IonContent>
     </IonPage>
   );

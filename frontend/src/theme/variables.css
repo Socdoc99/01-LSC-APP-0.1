@@ -1,2 +1,105 @@
-/* For information on how to create your own theme, please refer to:
-http://ionicframework.com/docs/theming/ */
+/*
+ * Sistema de diseño — LOVE UN IDIOMA UNIVERSAL
+ *
+ * Paleta: violeta profundo (foco, universalidad) + coral (calidez, "amor") +
+ * oro (logro/racha) + menta (correcto). Fondo cálido claro, nunca el beige
+ * crema genérico. Tema claro deliberado: no se mezcla con el modo oscuro
+ * automático de Ionic para evitar una versión oscura a medias sin diseñar.
+ */
+
+:root {
+  /* --- Paleta cruda --- */
+  --color-ink: #1a1533;
+  --color-ink-muted: #5b5470;
+  --color-paper: #fffbf7;
+  --color-surface: #ffffff;
+  --color-coral: #ff5a5f;
+  --color-violet: #6c4ab6;
+  --color-violet-deep: #4b2e8c;
+  --color-gold: #ffb238;
+  --color-mint: #2ec4b6;
+  --color-border: #ece6f7;
+
+  /* --- Tipografía --- */
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+
+  /* --- Radios y sombra, un solo lenguaje para toda la app --- */
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-card: 0 12px 32px -16px rgba(26, 21, 51, 0.28);
+
+  /* --- Overrides globales de Ionic --- */
+  --ion-font-family: var(--font-body);
+  --ion-background-color: var(--color-paper);
+  --ion-background-color-rgb: 255, 251, 247;
+  --ion-text-color: var(--color-ink);
+  --ion-text-color-rgb: 26, 21, 51;
+  --ion-border-color: var(--color-border);
+  --ion-item-background: var(--color-surface);
+  --ion-toolbar-background: var(--color-violet);
+  --ion-toolbar-color: #ffffff;
+
+  --ion-color-primary: #6c4ab6;
+  --ion-color-primary-rgb: 108, 74, 182;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #5f41a0;
+  --ion-color-primary-tint: #7b5cbd;
+
+  --ion-color-secondary: #ff5a5f;
+  --ion-color-secondary-rgb: 255, 90, 95;
+  --ion-color-secondary-contrast: #1a1533;
+  --ion-color-secondary-contrast-rgb: 26, 21, 51;
+  --ion-color-secondary-shade: #e04f54;
+  --ion-color-secondary-tint: #ff6a6f;
+
+  --ion-color-tertiary: #2ec4b6;
+  --ion-color-tertiary-rgb: 46, 196, 182;
+  --ion-color-tertiary-contrast: #1a1533;
+  --ion-color-tertiary-contrast-rgb: 26, 21, 51;
+  --ion-color-tertiary-shade: #28aca0;
+  --ion-color-tertiary-tint: #43cabd;
+
+  --ion-color-success: #2ec4b6;
+  --ion-color-success-rgb: 46, 196, 182;
+  --ion-color-success-contrast: #1a1533;
+  --ion-color-success-contrast-rgb: 26, 21, 51;
+  --ion-color-success-shade: #28aca0;
+  --ion-color-success-tint: #43cabd;
+
+  --ion-color-warning: #ffb238;
+  --ion-color-warning-rgb: 255, 178, 56;
+  --ion-color-warning-contrast: #1a1533;
+  --ion-color-warning-contrast-rgb: 26, 21, 51;
+  --ion-color-warning-shade: #e09d31;
+  --ion-color-warning-tint: #ffba4c;
+
+  --ion-color-danger: #c0293e;
+  --ion-color-danger-rgb: 192, 41, 62;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #a92437;
+  --ion-color-danger-tint: #c63e51;
+
+  --ion-color-medium: #8a8398;
+  --ion-color-medium-rgb: 138, 131, 152;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #797386;
+  --ion-color-medium-tint: #968fa2;
+
+  --ion-color-light: #f1edfb;
+  --ion-color-light-rgb: 241, 237, 251;
+  --ion-color-light-contrast: #1a1533;
+  --ion-color-light-contrast-rgb: 26, 21, 51;
+  --ion-color-light-shade: #d4d1dd;
+  --ion-color-light-tint: #f2effb;
+
+  --ion-color-dark: #1a1533;
+  --ion-color-dark-rgb: 26, 21, 51;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #17122d;
+  --ion-color-dark-tint: #312c47;
+}

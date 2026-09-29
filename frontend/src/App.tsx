@@ -26,18 +26,15 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
+ * Esta app tiene un tema de marca claro deliberado (ver theme/variables.css);
+ * no se activa el modo oscuro automático de Ionic para evitar una versión
+ * oscura sin diseñar mezclada con la paleta propia.
  */
 
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
-
-/* Theme variables */
+/* Tokens de la marca (colores, tipografía) */
 import './theme/variables.css';
+/* Estilos globales, componentes propios y animaciones */
+import './theme/global.css';
 
 setupIonicReact();
 

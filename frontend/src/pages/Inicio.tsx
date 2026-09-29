@@ -1,21 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonChip,
-  IonContent,
-  IonIcon,
-  IonLabel,
-  IonPage,
-  IonSpinner,
-  IonText,
-} from '@ionic/react';
-import { flameOutline } from 'ionicons/icons';
+import { IonButton, IonContent, IonPage, IonSpinner, IonText } from '@ionic/react';
 import Encabezado from '../components/Encabezado';
 import { api } from '../api';
 import type { Modulo, Racha } from '../api';
@@ -50,47 +35,58 @@ export default function Inicio() {
     <IonPage>
       <Encabezado titulo="Inicio" />
       <IonContent className="ion-padding">
-        {cargando && (
-          <div className="ion-text-center">
-            <IonSpinner aria-label="Cargando" />
-          </div>
-        )}
+        <div className="contenido">
+          {cargando && (
+            <div className="ion-text-center">
+              <IonSpinner aria-label="Cargando" />
+            </div>
+          )}
 
-        {!cargando && error && (
-          <IonText color="danger">
-            <p role="alert">{error}</p>
-          </IonText>
-        )}
+          {!cargando && error && (
+            <IonText color="danger">
+              <p role="alert">{error}</p>
+            </IonText>
+          )}
 
-        {!cargando && !error && (
-          <>
-            <IonChip color="warning" style={{ marginBottom: '1rem' }}>
-              <IonIcon icon={flameOutline} />
-              <IonLabel>
-                Racha actual: {racha?.racha_actual ?? 0} día(s) · Máxima: {racha?.racha_maxima ?? 0}
-              </IonLabel>
-            </IonChip>
+          {!cargando && !error && (
+            <>
+              <div className="racha-badge">
+                <span className="racha-badge__icono" aria-hidden="true">
+                  🔥
+                </span>
+                <span>
+                  {racha?.racha_actual ?? 0} día{racha?.racha_actual === 1 ? '' : 's'} de racha
+                  {racha && racha.racha_maxima > racha.racha_actual && (
+                    <span style={{ fontWeight: 400 }}> (tu mejor marca: {racha.racha_maxima})</span>
+                  )}
+                </span>
+              </div>
 
-            {modulo ? (
-              <IonCard>
-                <IonCardHeader>
-                  <IonCardSubtitle>Módulo {modulo.orden}</IonCardSubtitle>
-                  <IonCardTitle>{modulo.titulo}</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  <p>{modulo.descripcion}</p>
-                  <IonButton expand="block" onClick={() => navegar(`/leccion/${modulo.id}`)}>
-                    Comenzar módulo
-                  </IonButton>
-                </IonCardContent>
-              </IonCard>
-            ) : (
-              <IonText>
-                <p>Todavía no hay ningún módulo disponible. Vuelve más tarde.</p>
-              </IonText>
-            )}
-          </>
-        )}
+              {modulo ? (
+                <div className="module-card">
+                  <div className="module-card__header">
+                    <p className="module-card__eyebrow">Módulo {modulo.orden}</p>
+                    <h2 className="module-card__titulo">{modulo.titulo}</h2>
+                  </div>
+                  <div className="module-card__body">
+                    <p className="module-card__descripcion">{modulo.descripcion}</p>
+                    <IonButton
+                      expand="block"
+                      color="secondary"
+                      onClick={() => navegar(`/leccion/${modulo.id}`)}
+                    >
+                      Comenzar módulo
+                    </IonButton>
+                  </div>
+                </div>
+              ) : (
+                <IonText>
+                  <p>Todavía no hay ningún módulo disponible. Vuelve más tarde.</p>
+                </IonText>
+              )}
+            </>
+          )}
+        </div>
       </IonContent>
     </IonPage>
   );

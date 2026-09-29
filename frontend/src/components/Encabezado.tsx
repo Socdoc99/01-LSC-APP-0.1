@@ -6,7 +6,7 @@ export default function Encabezado({ titulo }: { titulo: string }) {
   const navegar = useNavigate();
 
   return (
-    <IonHeader>
+    <IonHeader className="app-header">
       <IonToolbar>
         <IonTitle>{titulo}</IonTitle>
         <IonButtons slot="end">

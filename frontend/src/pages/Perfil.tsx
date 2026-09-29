@@ -1,18 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  IonButton,
-  IonChip,
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPage,
-  IonSpinner,
-  IonText,
-} from '@ionic/react';
-import { flameOutline, trophyOutline } from 'ionicons/icons';
+import { IonButton, IonContent, IonPage, IonSpinner, IonText } from '@ionic/react';
 import { signOut } from 'firebase/auth';
 import Encabezado from '../components/Encabezado';
 import { auth } from '../firebase';
@@ -42,34 +30,61 @@ export default function Perfil() {
     navegar('/login', { replace: true });
   };
 
+  const nombre = usuario?.displayName || usuario?.email || '';
+
   return (
     <IonPage>
       <Encabezado titulo="Perfil" />
       <IonContent className="ion-padding">
-        <IonText>
-          <h2>{usuario?.displayName || usuario?.email}</h2>
-        </IonText>
+        <div className="contenido">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', marginBottom: '1.75rem' }}>
+            <div
+              aria-hidden="true"
+              style={{
+                width: 52,
+                height: 52,
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, var(--color-violet-deep), var(--color-violet))',
+                color: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'var(--font-display)',
+                fontSize: '1.3rem',
+                flexShrink: 0,
+              }}
+            >
+              {nombre.charAt(0).toUpperCase()}
+            </div>
+            <IonText>
+              <h2 style={{ margin: 0, wordBreak: 'break-word' }}>{nombre}</h2>
+            </IonText>
+          </div>
 
-        {cargando ? (
-          <IonSpinner aria-label="Cargando" />
-        ) : (
-          <IonList>
-            <IonItem>
-              <IonIcon icon={flameOutline} slot="start" color="warning" aria-hidden="true" />
-              <IonLabel>Racha actual</IonLabel>
-              <IonChip slot="end">{racha?.racha_actual ?? 0} día(s)</IonChip>
-            </IonItem>
-            <IonItem>
-              <IonIcon icon={trophyOutline} slot="start" color="secondary" aria-hidden="true" />
-              <IonLabel>Racha máxima</IonLabel>
-              <IonChip slot="end">{racha?.racha_maxima ?? 0} día(s)</IonChip>
-            </IonItem>
-          </IonList>
-        )}
+          {cargando ? (
+            <IonSpinner aria-label="Cargando" />
+          ) : (
+            <div className="racha-badge" style={{ marginBottom: '0.75rem' }}>
+              <span className="racha-badge__icono" aria-hidden="true">
+                🔥
+              </span>
+              <span>
+                {racha?.racha_actual ?? 0} día{racha?.racha_actual === 1 ? '' : 's'} de racha actual
+              </span>
+            </div>
+          )}
 
-        <IonButton expand="block" color="danger" onClick={cerrarSesion} style={{ marginTop: '2rem' }}>
-          Cerrar sesión
-        </IonButton>
+          {!cargando && (
+            <p style={{ color: 'var(--color-ink-muted)', marginTop: 0 }}>
+              Tu mejor racha hasta ahora: {racha?.racha_maxima ?? 0} día
+              {racha?.racha_maxima === 1 ? '' : 's'}.
+            </p>
+          )}
+
+          <IonButton expand="block" color="danger" onClick={cerrarSesion} style={{ marginTop: '1.5rem' }}>
+            Cerrar sesión
+          </IonButton>
+        </div>
       </IonContent>
     </IonPage>
   );

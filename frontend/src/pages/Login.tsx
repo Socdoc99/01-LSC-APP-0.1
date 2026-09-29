@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import {
   IonButton,
-  IonCard,
-  IonCardContent,
   IonContent,
   IonInput,
   IonItem,
@@ -13,7 +11,6 @@ import {
   IonSegmentButton,
   IonSpinner,
   IonText,
-  IonTitle,
 } from '@ionic/react';
 import {
   createUserWithEmailAndPassword,
@@ -22,6 +19,7 @@ import {
 import { FirebaseError } from 'firebase/app';
 import { auth, firebaseConfigurado } from '../firebase';
 import { useAuth } from '../context/AuthContext';
+import MarcaManual from '../components/MarcaManual';
 
 type Modo = 'iniciar' | 'registrar';
 
@@ -89,77 +87,84 @@ export default function Login() {
 
   return (
     <IonPage>
-      <IonContent className="ion-padding" fullscreen>
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%', justifyContent: 'center' }}>
-          <IonTitle className="ion-text-center" style={{ marginBottom: '1.5rem' }}>
-            LOVE UN IDIOMA UNIVERSAL
-          </IonTitle>
+      <IonContent fullscreen>
+        <div className="hero-auth">
+          <MarcaManual className="hero-mark" />
+          <div className="hero-lockup">
+            <h1>Love un idioma universal</h1>
+            <p>Aprende Lengua de Señas Colombiana, un saludo a la vez.</p>
+          </div>
 
           {!firebaseConfigurado && (
-            <IonNote color="warning" className="ion-text-center" style={{ display: 'block', marginBottom: '1rem' }}>
+            <IonNote
+              color="warning"
+              className="ion-text-center"
+              style={{ display: 'block', marginBottom: '1rem', color: '#fff3d6' }}
+            >
               Firebase todavía no está configurado en este entorno (faltan las variables
               VITE_FIREBASE_* en el .env). El registro e inicio de sesión no funcionarán hasta
               completarlas.
             </IonNote>
           )}
 
-          <IonCard>
-            <IonCardContent>
-              <IonSegment value={modo} onIonChange={(e) => setModo(e.detail.value as Modo)}>
-                <IonSegmentButton value="iniciar">Iniciar sesión</IonSegmentButton>
-                <IonSegmentButton value="registrar">Registrarme</IonSegmentButton>
-              </IonSegment>
+          <div className="auth-card">
+            <IonSegment value={modo} onIonChange={(e) => setModo(e.detail.value as Modo)}>
+              <IonSegmentButton value="iniciar">Iniciar sesión</IonSegmentButton>
+              <IonSegmentButton value="registrar">Registrarme</IonSegmentButton>
+            </IonSegment>
 
-              <IonItem style={{ marginTop: '1rem' }}>
-                <IonInput
-                  label="Correo"
-                  labelPlacement="stacked"
-                  type="email"
-                  value={correo}
-                  onIonInput={(e) => setCorreo(e.detail.value ?? '')}
-                  autocomplete="email"
-                />
-              </IonItem>
-              <IonItem>
-                <IonInput
-                  label="Contraseña"
-                  labelPlacement="stacked"
-                  type="password"
-                  value={contrasena}
-                  onIonInput={(e) => setContrasena(e.detail.value ?? '')}
-                  autocomplete={modo === 'registrar' ? 'new-password' : 'current-password'}
-                />
-              </IonItem>
+            <IonItem style={{ marginTop: '1.25rem' }} lines="full">
+              <IonInput
+                label="Correo"
+                labelPlacement="stacked"
+                type="email"
+                value={correo}
+                onIonInput={(e) => setCorreo(e.detail.value ?? '')}
+                autocomplete="email"
+              />
+            </IonItem>
+            <IonItem lines="full">
+              <IonInput
+                label="Contraseña"
+                labelPlacement="stacked"
+                type="password"
+                value={contrasena}
+                onIonInput={(e) => setContrasena(e.detail.value ?? '')}
+                autocomplete={modo === 'registrar' ? 'new-password' : 'current-password'}
+              />
+            </IonItem>
 
-              {error && (
-                <IonText color="danger">
-                  <p role="alert">{error}</p>
-                </IonText>
-              )}
+            {error && (
+              <IonText color="danger">
+                <p role="alert" style={{ fontSize: '0.9rem' }}>
+                  {error}
+                </p>
+              </IonText>
+            )}
 
-              {modo === 'registrar' && (
-                <IonNote className="ion-text-center" style={{ display: 'block', marginTop: '0.75rem' }}>
-                  Al crear tu cuenta usamos tu correo únicamente para identificarte y
-                  mostrarte tu progreso; tu nombre y racha se guardan para personalizar
-                  tu experiencia de aprendizaje. Nunca se comparten con terceros
-                  (Ley 1581 de 2012).
-                </IonNote>
-              )}
+            {modo === 'registrar' && (
+              <IonNote className="ion-text-center" style={{ display: 'block', marginTop: '0.75rem' }}>
+                Al crear tu cuenta usamos tu correo únicamente para identificarte y
+                mostrarte tu progreso; tu nombre y racha se guardan para personalizar
+                tu experiencia de aprendizaje. Nunca se comparten con terceros
+                (Ley 1581 de 2012).
+              </IonNote>
+            )}
 
-              <IonButton
-                expand="block"
-                onClick={enviar}
-                disabled={enviando || !firebaseConfigurado}
-                style={{ marginTop: '1rem' }}
-              >
-                {enviando
-                  ? <IonSpinner name="dots" />
-                  : modo === 'registrar'
-                    ? 'Acepto y creo mi cuenta'
-                    : 'Entrar'}
-              </IonButton>
-            </IonCardContent>
-          </IonCard>
+            <IonButton
+              expand="block"
+              color="secondary"
+              onClick={enviar}
+              disabled={enviando || !firebaseConfigurado}
+              style={{ marginTop: '1.25rem' }}
+            >
+              {enviando
+                ? <IonSpinner name="dots" />
+                : modo === 'registrar'
+                  ? 'Acepto y creo mi cuenta'
+                  : 'Entrar'}
+            </IonButton>
+          </div>
         </div>
       </IonContent>
     </IonPage>
