@@ -14,7 +14,9 @@ import {
 } from '@ionic/react';
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
 import { auth, firebaseConfigurado } from '../firebase';
@@ -22,6 +24,8 @@ import { useAuth } from '../context/AuthContext';
 import MarcaManual from '../components/MarcaManual';
 
 type Modo = 'iniciar' | 'registrar';
+
+const proveedorGoogle = new GoogleAuthProvider();
 
 function traducirError(error: unknown): string {
   if (error instanceof FirebaseError) {
@@ -36,6 +40,11 @@ function traducirError(error: unknown): string {
       case 'auth/wrong-password':
       case 'auth/user-not-found':
         return 'Correo o contraseña incorrectos.';
+      case 'auth/popup-closed-by-user':
+      case 'auth/cancelled-popup-request':
+        return 'Cerraste la ventana antes de completar el inicio de sesión.';
+      case 'auth/account-exists-with-different-credential':
+        return 'Ya existe una cuenta con ese correo usando otro método de inicio de sesión.';
       default:
         return 'No se pudo completar la operación. Intenta de nuevo.';
     }
@@ -78,6 +87,18 @@ export default function Login() {
       } else {
         await signInWithEmailAndPassword(auth, correo, contrasena);
       }
+    } catch (err) {
+      setError(traducirError(err));
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  const enviarConGoogle = async () => {
+    setError(null);
+    setEnviando(true);
+    try {
+      await signInWithPopup(auth, proveedorGoogle);
     } catch (err) {
       setError(traducirError(err));
     } finally {
@@ -163,6 +184,20 @@ export default function Login() {
                 : modo === 'registrar'
                   ? 'Acepto y creo mi cuenta'
                   : 'Entrar'}
+            </IonButton>
+
+            <div className="auth-divider" role="separator" aria-label="o">
+              <span>o</span>
+            </div>
+
+            <IonButton
+              expand="block"
+              fill="outline"
+              color="medium"
+              onClick={enviarConGoogle}
+              disabled={enviando || !firebaseConfigurado}
+            >
+              Continuar con Google
             </IonButton>
           </div>
         </div>
