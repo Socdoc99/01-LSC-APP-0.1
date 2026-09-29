@@ -65,8 +65,36 @@ que `GET /api/modulos` sigue devolviendo el módulo piloto.
 extensión de automatización no logró conectarse en esta sesión, así que sigue sin
 verificarse visualmente.
 
+Más tarde en la misma sesión se encontró un commit ya existente en `origin/main`,
+hecho por otra sesión de Claude Code en la nube, que preparaba el proyecto para
+desplegarse (gunicorn, WhiteNoise, `render.yaml` para Render, `firebase.json` para
+Firebase Hosting, soporte de Supabase). Se revisó su contenido (sin secretos reales
+commiteados) y se fusionó, resolviendo un conflicto en `.env.example`. Se corrigió
+además `.firebaserc`, que apuntaba a un proyecto placeholder (`demo-love-lsc`) en vez
+del proyecto real (`lsc-2bfd8`).
+
+Se hizo una auditoría de accesibilidad (WCAG AA) sobre `frontend/src` y se corrigieron
+los hallazgos: idioma del documento (`lang="en"` en vez de `"es"`), zoom deshabilitado
+en el viewport (violaba directamente el criterio de texto agrandable), mensajes de
+error sin `role="alert"` en Inicio y Lección, iconos decorativos sin `aria-hidden`,
+spinners sin nombre accesible, y videos de ejercicios sin `aria-label` (cuidando de no
+revelar la respuesta correcta en el ejercicio video→palabra).
+
+Se hizo también una auditoría de privacidad de datos (Ley 1581 de 2012) sobre
+`backend/` y `frontend/`. Se confirmó que no hay ningún secreto real en el historial
+de git y que el modelo de datos no recolecta información sensible, pero se encontraron
+y corrigieron dos problemas: un valor real de `DJANGO_SECRET_KEY` estaba hardcodeado
+como respaldo en `settings.py` (visible en el repositorio público de GitHub) — ahora
+falla explícitamente si falta en producción; y no existía ningún aviso de
+consentimiento explícito al registrarse — se agregó uno en la pantalla de Login.
+
+**Probado tras estos cambios:** las 9 pruebas del backend siguen pasando, `python
+manage.py check` no reporta problemas, y el frontend compila y pasa sus pruebas
+(`tsc --noEmit`, `npx vitest run`, `npm run build`) sin errores nuevos.
+
 **Pendiente para la próxima sesión:** validación real de contenido por una persona
 sorda o intérprete certificado; verificación visual de Lección/Resumen (manual, por
-el usuario, o en un entorno donde la extensión de automatización funcione);
-despliegue en una URL pública; retroalimentación de 2–3 personas ajenas al equipo,
-documentada por escrito.
+el usuario, o en un entorno donde la extensión de automatización funcione); crear las
+cuentas de Render, Supabase y hacer login con Firebase CLI para desplegar de verdad
+(esto requiere que el usuario cree las cuentas — no es algo que se pueda automatizar);
+retroalimentación de 2–3 personas ajenas al equipo, documentada por escrito.
